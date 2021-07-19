@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class ="text-center mb-3 mt-2">Poll: {{ question }}</h2>
+    <form action="{% url 'vote' question_id=question.id %}" method="POST">
+        {% csrf_token %}
+        {% for choice in question.choice_set.all %}
+            <input class="form-check-input" type="radio" name="choice" id="flexRadioDefault1" value="{{ choice.id }}">
+            <label class="form-check-label" for="choice">{{ choice }}</label>
+            <br>
+         {% endfor %}
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+{% endblock content %}

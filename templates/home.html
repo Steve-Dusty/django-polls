@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h2 class ="text-center mb-3 mt-2">Public polls</h2>
+{% for question in questions %}
+  <div class="card rounded-3 text-center w-75 mx-auto my-4" style="background-color: #F5F5F5; width: 30rem">
+    <div class="card-body">
+        <h3 class="card-title text-center">{{ question }}</h3>
+        <h6 class="card-text text-secondary">Poll hosted by: {{ question.author }}</h6>
+        <a href="{% url 'detail' question_id=question.id %}" class="btn btn-primary" role="button">Vote</a>
+        <a href="#" class="btn btn-secondary" role="button">Results</a>
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock content %}
