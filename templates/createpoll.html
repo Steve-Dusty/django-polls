@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class ="text-center mb-3 mt-2">Create a poll</h2>
+
+    <div class="row">
+        <div style="height: 50rem; background-color: orange;" class="col-md-6 offset-md-3 text-center rounded-3">
+            <form method="POST" action="{% url 'createchoice' %}" class="form-horizontal">
+                {% csrf_token %}
+                <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="question_text">Enter Poll Question: </label>
+                                <input type="text" class="form-control" id="question" name="question_text" placeholder="Is Rust better than C++?">
+                            </div>
+                        </div>
+                    </div>
+            </form>
+            <form method="POST" action="{% url 'createchoice' %}" class="form-horizontal">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="choice_text">Enter Choice: </label>
+                                <div class="d-flex">
+                                <input type="text" class="form-control" id="choice" name="choice_text" placeholder="Example: Yes">
+                                <button class="btn btn-info">Create choice</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -9,6 +9,13 @@
             <label class="form-check-label" for="choice">{{ choice }}</label>
             <br>
          {% endfor %}
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-success" type="submit">Submit</button>
     </form>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="text-danger" style="list-style: none">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock content %}

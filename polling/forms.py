@@ -6,13 +6,13 @@ from .models import Question, Choice
 class QuestionForm(ModelForm):
     class Meta:
         model = Question
-        fields = ['author', 'question_text', 'pub_date', 'ending_date']
+        fields = ['question_text']
 
 
 class ChoiceForm(ModelForm):
     class Meta:
         model = Choice
-        fields = ['question', 'choice_text', 'votes']
+        fields = ['choice_text']
 
 
 class VoteForm(forms.Form):

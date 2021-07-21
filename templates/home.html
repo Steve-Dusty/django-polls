@@ -3,8 +3,9 @@
 {% block content %}
 
 
-<h2 class ="text-center mb-3 mt-2">Public polls</h2>
-{% for question in questions %}
+<h2 class ="text-center mt-2">Public polls</h2>
+<div class="d-flex justify-content-center">({{ poll.number }} / {{ poll.paginator.num_pages }})</div>
+{% for question in poll.object_list %}
   <div class="card rounded-3 text-center w-75 mx-auto my-4" style="background-color: #F5F5F5; width: 30rem">
     <div class="card-body">
         <h3 class="card-title text-center">{{ question }}</h3>
@@ -14,5 +15,13 @@
     </div>
   </div>
 {% endfor %}
+  <div class="page-links text-center">
+    {% if poll.has_previous %}
+      <a href="{% url 'home' %}?page={{ poll.previous_page_number }}">Previous Page</a>
+    {% endif %}
+    {% if poll.has_next %}
+      <a href="{% url 'home' %}?page={{ poll.next_page_number }}">Next Page</a>
+    {% endif %}
+  </div>
 
 {% endblock content %}
