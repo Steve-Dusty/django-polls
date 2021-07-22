@@ -25,14 +25,31 @@
                             <div class="form-group">
                                 <label for="choice_text">Enter Choice: </label>
                                 <div class="d-flex">
-                                <input type="text" class="form-control" id="choice" name="choice_text" placeholder="Example: Yes">
-                                <button class="btn btn-info">Create choice</button>
+                                <input type="text" class="form-control" id="choice" name="choice_text" placeholder="Example: Yes" />
+                                <button type="submit" class="btn btn-info">Create choice</button>
                                 </div>
+                                {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                            <li class="alert alert-danger" style="list-style: none">{{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
               </div>
             </form>
+            <div class="row">
+                <div class="row justify-content-center">
+                    <h2>Choices: </h2>
+                    <div class="col-lg-12">
+                        {% for choice in choices %}
+                            <button class="btn btn-primary">{{ choice }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

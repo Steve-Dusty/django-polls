@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.forms import inlineformset_factory
 from .forms import QuestionForm, ChoiceForm, VoteForm
 from .models import Question, Choice
 
@@ -47,6 +48,7 @@ def vote(request, question_id):
 
 @login_required
 def createpoll(request):
+    choices = Choice.objects.filter(question=None)
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         if form.is_valid():
@@ -56,7 +58,7 @@ def createpoll(request):
             return redirect('/')
     else:
         form = QuestionForm()
-        return render(request, 'createpoll.html', {'form': form})
+        return render(request, 'createpoll.html', {'form': form, 'choices': choices})
 
 
 @login_required
@@ -66,9 +68,14 @@ def createchoice(request):
         if form.is_valid():
             choice = Choice(
                 choice_text=form.cleaned_data['choice_text'],
-                votes=0  # do question
+                votes=0
             )
             choice.save()
+            return redirect('createpoll')
+
+        else:
+            messages.error(
+                request, 'Something went wrong with creating your choice. (Input 50 characters and above 0 characters)')
             return redirect('createpoll')
     else:
         form = ChoiceForm()
