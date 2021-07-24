@@ -5,12 +5,13 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
+from django.contrib.auth import get_user_model
 from .forms import QuestionForm, ChoiceForm, VoteForm
 from .models import Question, Choice
 
 
 def home(request):
-    questions = Question.objects.all()
+    questions = Question.objects.exclude(choice__isnull=True)
 
     question_paginator = Paginator(questions, 5)
 
@@ -47,20 +48,42 @@ def vote(request, question_id):
 
 
 @login_required
-def createpoll(request):
-    choices = Choice.objects.filter(question=None)
+def createquestion(request):
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         if form.is_valid():
-            question = Question(
-                question_text=form.cleaned_data['question_text'])  # , do user mode here)
+            question = form.save(commit=False)
+            question.author = request.user
             question.save()
-            return redirect('/')
+            return redirect('createchoice', question_id=question.id)
+        else:
+            return redirect('createquestion')
     else:
         form = QuestionForm()
-        return render(request, 'createpoll.html', {'form': form, 'choices': choices})
+        return render(request, 'createquestion.html', {'form': form})
 
 
+@login_required
+def createchoice(request, question_id):
+    question = get_object_or_404(Question, pk=question_id, author=request.user)
+    ChoiceFormset = inlineformset_factory(
+        Question, Choice, fields=('choice_text',), extra=1)
+
+    if request.method == 'POST':
+        formset = ChoiceFormset(request.POST, instance=question)
+        if formset.is_valid():
+            formset.save()
+            return redirect('createchoice', question_id=question.id)
+        else:
+            messages.error(
+                request, 'Something went wrong with creating your choice. (Input 50 characters and above 0 characters)')
+            return redirect('createchoice')
+
+    formset = ChoiceFormset(instance=question)
+    return render(request, 'createchoice.html', {'formset': formset, 'question': question})
+
+
+"""
 @login_required
 def createchoice(request):
     if request.method == 'POST':
@@ -80,6 +103,7 @@ def createchoice(request):
     else:
         form = ChoiceForm()
         return redirect('createpoll')
+"""
 
 
 def results(request, question_id):
