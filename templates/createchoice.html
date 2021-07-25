@@ -22,11 +22,6 @@
                             <div class="form-group">
                                 {{ formset.as_p }}               
                                 <button type="submit" class="btn btn-primary">Add more</button> 
-                                <!-- <label for="choice_text">Enter Choice: </label>
-                                <div class="d-flex">
-                                <input type="text" class="form-control" id="choice" name="choice_text" placeholder="Example: Yes" />
-                                <button type="submit" class="btn btn-info">Create choice</button>
-                                </div> -->
                                 <!-- Display error message-->
                                 {% if messages %}
                                     <ul class="messages">
@@ -45,7 +40,7 @@
               </div>
             </form>
             <div class="d-grid mt-3">
-                <a class="btn btn-success btn-lg m-3" href="{% url 'home' %}" type="submit">Go back to frontpage</a>
+                <a class="btn btn-success btn-lg m-3" href="{% url 'home' %}" type="submit">Done! Take me back to the front page.</a>
             </div>
         </div>
     </div>

@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>You are at poll: <strong>{{ question }}</strong></p>
+
+<h2 class ="text-center mb-3 mt-2">Result for poll: {{ question.question_text }}</h2>
+
+<div class="container mt-5">
+	<ul class="list-group">
+	    {% for choice in choices %}
+	  		<li class="list-group-item d-flex justify-content-between align-items-center">
+	    	{{ choice.choice_text }}
+	    	<span class="badge bg-primary rounded-pill">{{ choice.votes }}</span>
+
+	  		</li>
+	  	{% endfor %}
+	</ul>
+
+</div>
 {% endblock content %}

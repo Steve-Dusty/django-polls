@@ -15,7 +15,9 @@
   </div>
 {% endfor %}
   <div class="page-links text-center">
-    <div class="d-flex justify-content-center">({{ poll.number }} / {{ poll.paginator.num_pages }})</div>
+    {% if poll.paginator.num_pages != 1 %}
+      <div class="d-flex justify-content-center">({{ poll.number }} / {{ poll.paginator.num_pages }})</div>
+    {% endif %}
     {% if poll.has_previous %}
       <a href="{% url 'home' %}?page={{ poll.previous_page_number }}">Previous Page</a>
     {% endif %}
