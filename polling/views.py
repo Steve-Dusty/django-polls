@@ -83,6 +83,11 @@ def createchoice(request, question_id):
     return render(request, 'createchoice.html', {'formset': formset, 'question': question})
 
 
+def results(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'results.html', {'question': question})
+
+
 """
 @login_required
 def createchoice(request):
@@ -104,7 +109,3 @@ def createchoice(request):
         form = ChoiceForm()
         return redirect('createpoll')
 """
-
-
-def results(request, question_id):
-    pass

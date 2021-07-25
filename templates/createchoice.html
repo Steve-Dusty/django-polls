@@ -5,7 +5,7 @@
 <h2 class ="text-center mb-3 mt-2">Now, create the options for users to select.</h2>
 
     <div class="row">
-        <div style="height: 50rem; background-color: #89CFF0;" class="col-md-6 offset-md-3 text-center rounded-3">
+        <div style="background-color: #89CFF0;" class="col-md-6 offset-md-3 text-center rounded-3 min-vh-50">
             <!-- Progress bar -->
             <div class="progress m-3">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
@@ -21,7 +21,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 {{ formset.as_p }}               
-                                <button type="submit" class="btn btn-primary">Save</button>                 
+                                <button type="submit" class="btn btn-primary">Add more</button> 
                                 <!-- <label for="choice_text">Enter Choice: </label>
                                 <div class="d-flex">
                                 <input type="text" class="form-control" id="choice" name="choice_text" placeholder="Example: Yes" />
@@ -44,6 +44,9 @@
                     <!-- Display error message-->
               </div>
             </form>
+            <div class="d-grid mt-3">
+                <a class="btn btn-success btn-lg m-3" href="{% url 'home' %}" type="submit">Go back to frontpage</a>
+            </div>
         </div>
     </div>
 
