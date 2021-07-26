@@ -88,9 +88,11 @@ def createchoice(request, question_id):
 def results(request, question_id):
     question = Question.objects.get(pk=question_id)
     choices = question.choice_set.all()
+    total_votes = 0
+    for choice in choices:
+        total_votes += choice.votes
 
     top_choice = choices[:2]
-    # top_choice = choices[:1]
     sort_leaders = []
     for leaders in top_choice:
         sort_leaders.append(leaders.votes)
@@ -99,10 +101,10 @@ def results(request, question_id):
         if occurances == 1:
             top_choice = choices[:1]
             context = {'question': question,
-                       'choices': choices, 'top_choice': top_choice}
+                       'choices': choices, 'top_choice': top_choice, 'total_votes': total_votes}
         else:
             context = {'question': question,
-                       'choices': choices}
+                       'choices': choices, 'total_votes': total_votes}
 
     return render(request, 'results.html', context)
 
