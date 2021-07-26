@@ -88,19 +88,20 @@ def createchoice(request, question_id):
 def results(request, question_id):
     question = Question.objects.get(pk=question_id)
     choices = question.choice_set.all()
-    total_votes = question.choice_set.aggregate(Sum('votes')).get('votes__sum')
+    total_votes = question.choice_set.aggregate(
+        total_votes=Sum('votes')).get('total_votes')
     top_choice = choices[:2]
     sort_leaders = []
     for leaders in top_choice:
         sort_leaders.append(leaders.votes)
         largest = max(sort_leaders)
         occurances = sort_leaders.count(largest)
-        if occurances == 1:
-            top_choice = choices[:1]
-            context = {'question': question,
-                       'choices': choices, 'top_choice': top_choice, 'total_votes': total_votes}
-        else:
-            context = {'question': question,
-                       'choices': choices, 'total_votes': total_votes}
+    if occurances == 1:
+        top_choice = choices[:1]
+        context = {'question': question,
+                   'choices': choices, 'top_choice': top_choice, 'total_votes': total_votes}
+    else:
+        context = {'question': question,
+                   'choices': choices, 'total_votes': total_votes}
 
     return render(request, 'results.html', context)
