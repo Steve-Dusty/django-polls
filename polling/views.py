@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.db.models import Count
+from django.db.models import Sum
 from .forms import QuestionForm, ChoiceForm, VoteForm
 from .models import Question, Choice
 
@@ -88,10 +88,7 @@ def createchoice(request, question_id):
 def results(request, question_id):
     question = Question.objects.get(pk=question_id)
     choices = question.choice_set.all()
-    total_votes = 0
-    for choice in choices:
-        total_votes += choice.votes
-
+    total_votes = question.choice_set.aggregate(Sum('votes')).get('votes__sum')
     top_choice = choices[:2]
     sort_leaders = []
     for leaders in top_choice:
@@ -107,7 +104,3 @@ def results(request, question_id):
                        'choices': choices, 'total_votes': total_votes}
 
     return render(request, 'results.html', context)
-
-
-def dashboard(request, question_id):
-    pass
