@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.db.models import Count
 from .forms import QuestionForm, ChoiceForm, VoteForm
 from .models import Question, Choice
 
@@ -41,7 +42,6 @@ def vote(request, question_id):
             selected_choice.votes += 1
             selected_choice.save()
             return HttpResponseRedirect(reverse('results', args=(question.id,)))
-
 
         else:
             messages.error(request, "You must select an choice!")
@@ -81,36 +81,31 @@ def createchoice(request, question_id):
             return redirect('createchoice')
 
     formset = ChoiceFormset(instance=question)
-    return render(request, 'createchoice.html', {'formset': formset, 'question': question})
+    context = {'formset': formset, 'question': question}
+    return render(request, 'createchoice.html', context)
 
 
 def results(request, question_id):
     question = Question.objects.get(pk=question_id)
-    # MUST FILTER THIS OUT CORRECTLY TO CORRESPONDING QUESTIONS
-    choices = Choice.objects.all()
-    context = {'question': question, 'choices': choices}
+    choices = question.choice_set.all()
+
+    top_choice = choices[:2]
+    # top_choice = choices[:1]
+    sort_leaders = []
+    for leaders in top_choice:
+        sort_leaders.append(leaders.votes)
+        largest = max(sort_leaders)
+        occurances = sort_leaders.count(largest)
+        if occurances == 1:
+            top_choice = choices[:1]
+            context = {'question': question,
+                       'choices': choices, 'top_choice': top_choice}
+        else:
+            context = {'question': question,
+                       'choices': choices}
+
     return render(request, 'results.html', context)
 
 
-
-"""
-@login_required
-def createchoice(request):
-    if request.method == 'POST':
-        form = ChoiceForm(request.POST)
-        if form.is_valid():
-            choice = Choice(
-                choice_text=form.cleaned_data['choice_text'],
-                votes=0
-            )
-            choice.save()
-            return redirect('createpoll')
-
-        else:
-            messages.error(
-                request, 'Something went wrong with creating your choice. (Input 50 characters and above 0 characters)')
-            return redirect('createpoll')
-    else:
-        form = ChoiceForm()
-        return redirect('createpoll')
-"""
+def dashboard(request, question_id):
+    pass

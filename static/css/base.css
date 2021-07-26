@@ -5,3 +5,9 @@
     width: 50%;
     transform: translate(-50%, -50%);
 }
+
+hr.new {
+    border: 5px solid black;
+    border-radius: 2px;
+}
+

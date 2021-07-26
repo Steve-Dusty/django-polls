@@ -4,16 +4,32 @@
 
 <h2 class ="text-center mb-3 mt-2">Result for poll: {{ question.question_text }}</h2>
 
+<h3 class ="text-center mb-3 mt-2">Total votes: replace later</h3>
+
 <div class="container mt-5">
+	<!-- Leader choice here -->
+	{% if top_choice %}
+		{% for leader in top_choice %}
+	<p class="text-success mb-0">Current leader</p>
+	<ul class="list-group m-3">
+		<li class="list-group-item d-flex justify-content-between align-items-center bg-info">
+			{{ leader }}
+		<span class="badge bg-danger rounded-pill">{{ leader.votes }} votes</span>
+		</li>
+	</ul>	
+		{% endfor %}
+		<hr class="new">
+	{% endif %}
+		<!-- end of leader display -->
 	<ul class="list-group">
 	    {% for choice in choices %}
 	  		<li class="list-group-item d-flex justify-content-between align-items-center">
 	    	{{ choice.choice_text }}
-	    	<span class="badge bg-primary rounded-pill">{{ choice.votes }}</span>
+	    	<span class="badge bg-primary rounded-pill">{{ choice.votes }} votes</span>
 
 	  		</li>
 	  	{% endfor %}
 	</ul>
-
+	<a href="{% url 'home' %}" class="btn btn-primary btn-lg btn-block mt-3">Return to home</a>
 </div>
 {% endblock content %}
