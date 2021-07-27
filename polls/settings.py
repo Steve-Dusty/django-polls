@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'polls.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.dj_db_url('DATABASE_URL')
+    'default': env.dj_db_url('DATABASE_URL', default="sqlite://")
 }
 
 
