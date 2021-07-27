@@ -3,4 +3,4 @@ whitenoise
 gunicorn
 psycopg2-binary
 environs
-
+dj-database-url
